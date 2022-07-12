@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "418814391878",
+    "project_id": "teecopee-2efd3",
+    "storage_bucket": "teecopee-2efd3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:418814391878:android:627172d70953a4d9977c47",
+        "android_client_info": {
+          "package_name": "com.axolotls.teecopee"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "418814391878-j33cmj3bdahq94sjlesceec6oa2sbfkl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRDbIYS5xDBPqpQ9eJU80O2Hf8QR9wnSQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "418814391878-j33cmj3bdahq94sjlesceec6oa2sbfkl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "418814391878-i3b7kboh21b5lp544j2cc6frd68r0nt4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.axolotls.teecopee"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
