@@ -42,8 +42,10 @@ dependencies:
   cached_network_image: ^3.2.1
 #  google_sign_in: ^5.2.1
 #  flutter_facebook_auth: ^3.5.7
-  photo_view: ^0.14.0
+  photo_view: ^0.13.0
   image_compression_flutter: ^1.0.2
+  file_picker: ^4.6.1
+  native_pdf_view: ^6.0.0+1
 
 dev_dependencies:
   flutter_test:

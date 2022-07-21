@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:sixam_mart/data/model/response/item_model.dart';
 
 class CartModel {
@@ -6,6 +7,8 @@ class CartModel {
   List<Variation> _variation;
   double _discountAmount;
   int _quantity;
+  int _page_count;
+  String _file;
   List<AddOn> _addOnIds;
   List<AddOns> _addOns;
   bool _isCampaign;
@@ -13,21 +16,25 @@ class CartModel {
   Item _item;
 
   CartModel(
-        double price,
-        double discountedPrice,
-        List<Variation> variation,
-        double discountAmount,
-        int quantity,
-        List<AddOn> addOnIds,
-        List<AddOns> addOns,
-        bool isCampaign,
-        int stock,
-        Item item) {
+      double price,
+      double discountedPrice,
+      List<Variation> variation,
+      double discountAmount,
+      int quantity,
+      int pageCount,
+      String file,
+      List<AddOn> addOnIds,
+      List<AddOns> addOns,
+      bool isCampaign,
+      int stock,
+      Item item) {
     this._price = price;
     this._discountedPrice = discountedPrice;
     this._variation = variation;
     this._discountAmount = discountAmount;
     this._quantity = quantity;
+    this._page_count = pageCount;
+    this._file = file;
     this._addOnIds = addOnIds;
     this._addOns = addOns;
     this._isCampaign = isCampaign;
@@ -41,6 +48,9 @@ class CartModel {
   double get discountAmount => _discountAmount;
   // ignore: unnecessary_getters_setters
   int get quantity => _quantity;
+  int get pageCount => _page_count;
+  String get file => _file;
+
   // ignore: unnecessary_getters_setters
   set quantity(int qty) => _quantity = qty;
   List<AddOn> get addOnIds => _addOnIds;
@@ -60,6 +70,8 @@ class CartModel {
     }
     _discountAmount = json['discount_amount'].toDouble();
     _quantity = json['quantity'];
+    _page_count = json['pageCount'];
+    _file = json['file'];
     _stock = json['stock'];
     if (json['add_on_ids'] != null) {
       _addOnIds = [];
@@ -88,6 +100,9 @@ class CartModel {
     }
     data['discount_amount'] = this._discountAmount;
     data['quantity'] = this._quantity;
+    data['pageCount'] = this._page_count;
+    data['file'] = this._file;
+
     if (this._addOnIds != null) {
       data['add_on_ids'] = this._addOnIds.map((v) => v.toJson()).toList();
     }

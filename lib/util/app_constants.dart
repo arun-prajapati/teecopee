@@ -43,6 +43,7 @@ class AppConstants {
   static const String HISTORY_ORDER_LIST_URI = '/api/v1/customer/order/list';
   static const String ORDER_CANCEL_URI = '/api/v1/customer/order/cancel';
   static const String COD_SWITCH_URL = '/api/v1/customer/order/payment-method';
+  static const String FILE_UPLOAD = '/api/v1/customer/order/file_upload';
   static const String ORDER_DETAILS_URI = '/api/v1/customer/order/details?order_id=';
   static const String WISH_LIST_GET_URI = '/api/v1/customer/wish-list';
   static const String ADD_WISH_LIST_URI = '/api/v1/customer/wish-list/add?';

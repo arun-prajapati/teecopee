@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:sixam_mart/data/model/response/address_model.dart';
 import 'package:sixam_mart/data/model/response/item_model.dart';
 import 'package:flutter/material.dart';
@@ -30,33 +31,32 @@ class PlaceOrderBody {
   String _house;
   String _floor;
 
-  PlaceOrderBody(
-      {@required List<Cart> cart,
-        @required double couponDiscountAmount,
-        @required String couponCode,
-        @required double orderAmount,
-        @required String orderType,
-        @required String paymentMethod,
-        @required int storeId,
-        @required double distance,
-        @required String scheduleAt,
-        @required double discountAmount,
-        @required double taxAmount,
-        @required String orderNote,
-        @required String address,
-        @required AddressModel receiverDetails,
-        @required String latitude,
-        @required String longitude,
-        @required String contactPersonName,
-        @required String contactPersonNumber,
-        @required String addressType,
-        @required String parcelCategoryId,
-        @required String chargePayer,
-        @required String streetNumber,
-        @required String house,
-        @required String floor,
-
-      }) {
+  PlaceOrderBody({
+    @required List<Cart> cart,
+    @required double couponDiscountAmount,
+    @required String couponCode,
+    @required double orderAmount,
+    @required String orderType,
+    @required String paymentMethod,
+    @required int storeId,
+    @required double distance,
+    @required String scheduleAt,
+    @required double discountAmount,
+    @required double taxAmount,
+    @required String orderNote,
+    @required String address,
+    @required AddressModel receiverDetails,
+    @required String latitude,
+    @required String longitude,
+    @required String contactPersonName,
+    @required String contactPersonNumber,
+    @required String addressType,
+    @required String parcelCategoryId,
+    @required String chargePayer,
+    @required String streetNumber,
+    @required String house,
+    @required String floor,
+  }) {
     this._cart = cart;
     this._couponDiscountAmount = couponDiscountAmount;
     this._orderAmount = orderAmount;
@@ -126,7 +126,9 @@ class PlaceOrderBody {
     _discountAmount = json['discount_amount'].toDouble();
     _taxAmount = json['tax_amount'].toDouble();
     _address = json['address'];
-    _receiverDetails = json['receiver_details'] != null ? new AddressModel.fromJson(json['receiver_details']) : null;
+    _receiverDetails = json['receiver_details'] != null
+        ? new AddressModel.fromJson(json['receiver_details'])
+        : null;
     _latitude = json['latitude'];
     _longitude = json['longitude'];
     _contactPersonName = json['contact_person_name'];
@@ -144,23 +146,23 @@ class PlaceOrderBody {
     if (this._cart != null) {
       data['cart'] = jsonEncode(this._cart.map((v) => v.toJson()).toList());
     }
-    if(this._couponDiscountAmount != null) {
+    if (this._couponDiscountAmount != null) {
       data['coupon_discount_amount'] = this._couponDiscountAmount.toString();
     }
     data['order_amount'] = this._orderAmount.toString();
     data['order_type'] = this._orderType;
     data['payment_method'] = this._paymentMethod;
-    if(this._orderNote != null && this._orderNote.isNotEmpty) {
+    if (this._orderNote != null && this._orderNote.isNotEmpty) {
       data['order_note'] = this._orderNote;
     }
-    if(this._couponCode != null) {
+    if (this._couponCode != null) {
       data['coupon_code'] = this._couponCode;
     }
-    if(this._storeId != null) {
+    if (this._storeId != null) {
       data['store_id'] = this._storeId.toString();
     }
     data['distance'] = this._distance.toString();
-    if(this._scheduleAt != null) {
+    if (this._scheduleAt != null) {
       data['schedule_at'] = this._scheduleAt;
     }
     data['discount_amount'] = this._discountAmount.toString();
@@ -194,6 +196,9 @@ class Cart {
   String _variant;
   List<Variation> _variation;
   int _quantity;
+  int page_count;
+  String _file;
+
   List<int> _addOnIds;
   List<AddOns> _addOns;
   List<int> _addOnQtys;
@@ -201,19 +206,23 @@ class Cart {
   Cart(
       int itemId,
       int itemCampaignId,
-        String price,
-        String variant,
-        List<Variation> variation,
-        int quantity,
-        List<int> addOnIds,
-        List<AddOns> addOns,
-        List<int> addOnQtys) {
+      String price,
+      String variant,
+      List<Variation> variation,
+      int quantity,
+      int pageCount,
+      String file,
+      List<int> addOnIds,
+      List<AddOns> addOns,
+      List<int> addOnQtys) {
     this._itemId = itemId;
     this._itemCampaignId = itemCampaignId;
     this._price = price;
     this._variant = variant;
     this._variation = variation;
     this._quantity = quantity;
+    this.page_count = pageCount;
+    this._file = file;
     this._addOnIds = addOnIds;
     this._addOns = addOns;
     this._addOnQtys = addOnQtys;
@@ -225,6 +234,7 @@ class Cart {
   String get variant => _variant;
   List<Variation> get variation => _variation;
   int get quantity => _quantity;
+  int get pageCount => page_count;
   List<int> get addOnIds => _addOnIds;
   List<AddOns> get addOns => _addOns;
   List<int> get addOnQtys => _addOnQtys;
@@ -241,6 +251,8 @@ class Cart {
       });
     }
     _quantity = json['quantity'];
+    page_count = json['page_count'];
+    _file = json['file'];
     _addOnIds = json['add_on_ids'].cast<int>();
     if (json['add_ons'] != null) {
       _addOns = [];
@@ -261,6 +273,8 @@ class Cart {
       data['variation'] = this._variation.map((v) => v.toJson()).toList();
     }
     data['quantity'] = this._quantity;
+    data['page_count'] = this.page_count;
+    data['file'] = this._file;
     data['add_on_ids'] = this._addOnIds;
     if (this._addOns != null) {
       data['add_ons'] = this._addOns.map((v) => v.toJson()).toList();

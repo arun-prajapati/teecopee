@@ -55,13 +55,13 @@ class ItemController extends GetxController implements GetxService {
 
   Future<void> getPopularItemList(bool reload, String type, bool notify) async {
     _popularType = type;
-    if(reload) {
+    if (reload) {
       _popularItemList = null;
     }
-    if(notify) {
+    if (notify) {
       update();
     }
-    if(_popularItemList == null || reload) {
+    if (_popularItemList == null || reload) {
       Response response = await itemRepo.getPopularItemList(type);
       if (response.statusCode == 200) {
         _popularItemList = [];
@@ -74,15 +74,16 @@ class ItemController extends GetxController implements GetxService {
     }
   }
 
-  Future<void> getReviewedItemList(bool reload, String type, bool notify) async {
+  Future<void> getReviewedItemList(
+      bool reload, String type, bool notify) async {
     _reviewedType = type;
-    if(reload) {
+    if (reload) {
       _reviewedItemList = null;
     }
-    if(notify) {
+    if (notify) {
       update();
     }
-    if(_reviewedItemList == null || reload) {
+    if (_reviewedItemList == null || reload) {
       Response response = await itemRepo.getReviewedItemList(type);
       if (response.statusCode == 200) {
         _reviewedItemList = [];
@@ -104,16 +105,19 @@ class ItemController extends GetxController implements GetxService {
     _variationIndex = [];
     _addOnQtyList = [];
     _addOnActiveList = [];
-    if(cart != null) {
+    if (cart != null) {
       _quantity = cart.quantity;
       List<String> _variationTypes = [];
-      if(cart.variation.length != null && cart.variation.length > 0 && cart.variation[0].type != null) {
+      if (cart.variation.length != null &&
+          cart.variation.length > 0 &&
+          cart.variation[0].type != null) {
         _variationTypes.addAll(cart.variation[0].type.split('-'));
       }
       int _varIndex = 0;
       item.choiceOptions.forEach((choiceOption) {
-        for(int index=0; index<choiceOption.options.length; index++) {
-          if(choiceOption.options[index].trim().replaceAll(' ', '') == _variationTypes[_varIndex].trim()) {
+        for (int index = 0; index < choiceOption.options.length; index++) {
+          if (choiceOption.options[index].trim().replaceAll(' ', '') ==
+              _variationTypes[_varIndex].trim()) {
             _variationIndex.add(index);
             break;
           }
@@ -123,15 +127,16 @@ class ItemController extends GetxController implements GetxService {
       List<int> _addOnIdList = [];
       cart.addOnIds.forEach((addOnId) => _addOnIdList.add(addOnId.id));
       item.addOns.forEach((addOn) {
-        if(_addOnIdList.contains(addOn.id)) {
+        if (_addOnIdList.contains(addOn.id)) {
           _addOnActiveList.add(true);
-          _addOnQtyList.add(cart.addOnIds[_addOnIdList.indexOf(addOn.id)].quantity);
-        }else {
+          _addOnQtyList
+              .add(cart.addOnIds[_addOnIdList.indexOf(addOn.id)].quantity);
+        } else {
           _addOnActiveList.add(false);
           _addOnQtyList.add(1);
         }
       });
-    }else {
+    } else {
       _quantity = 1;
       item.choiceOptions.forEach((element) => _variationIndex.add(0));
       item.addOns.forEach((addOn) {
@@ -146,7 +151,9 @@ class ItemController extends GetxController implements GetxService {
   int setExistInCart(Item item, {bool notify = false}) {
     List<String> _variationList = [];
     for (int index = 0; index < item.choiceOptions.length; index++) {
-      _variationList.add(item.choiceOptions[index].options[_variationIndex[index]].replaceAll(' ', ''));
+      _variationList.add(item
+          .choiceOptions[index].options[_variationIndex[index]]
+          .replaceAll(' ', ''));
     }
     String variationType = '';
     bool isFirst = true;
@@ -158,24 +165,32 @@ class ItemController extends GetxController implements GetxService {
         variationType = '$variationType-$variation';
       }
     });
-    _cartIndex = Get.find<CartController>().isExistInCart(item.id, variationType, false, null);
-    if(_cartIndex != -1) {
+    _cartIndex = Get.find<CartController>()
+        .isExistInCart(item.id, variationType, false, null);
+    print("666666 $_cartIndex");
+    if (_cartIndex != -1) {
       _quantity = Get.find<CartController>().cartList[_cartIndex].quantity;
       _addOnActiveList = [];
       _addOnQtyList = [];
       List<int> _addOnIdList = [];
-      Get.find<CartController>().cartList[_cartIndex].addOnIds.forEach((addOnId) => _addOnIdList.add(addOnId.id));
+      Get.find<CartController>()
+          .cartList[_cartIndex]
+          .addOnIds
+          .forEach((addOnId) => _addOnIdList.add(addOnId.id));
       item.addOns.forEach((addOn) {
-        if(_addOnIdList.contains(addOn.id)) {
+        if (_addOnIdList.contains(addOn.id)) {
           _addOnActiveList.add(true);
-          _addOnQtyList.add(Get.find<CartController>().cartList[_cartIndex].addOnIds[_addOnIdList.indexOf(addOn.id)].quantity);
-        }else {
+          _addOnQtyList.add(Get.find<CartController>()
+              .cartList[_cartIndex]
+              .addOnIds[_addOnIdList.indexOf(addOn.id)]
+              .quantity);
+        } else {
           _addOnActiveList.add(false);
           _addOnQtyList.add(1);
         }
       });
     }
-    if(notify) {
+    if (notify) {
       update();
     }
     return _cartIndex;
@@ -192,9 +207,10 @@ class ItemController extends GetxController implements GetxService {
 
   void setQuantity(bool isIncrement, int stock) {
     if (isIncrement) {
-      if(Get.find<SplashController>().configModel.moduleConfig.module.stock && _quantity >= stock) {
+      if (Get.find<SplashController>().configModel.moduleConfig.module.stock &&
+          _quantity >= stock) {
         showCustomSnackBar('out_of_stock'.tr);
-      }else {
+      } else {
         _quantity = _quantity + 1;
       }
     } else {
@@ -292,16 +308,16 @@ class ItemController extends GetxController implements GetxService {
 
   void setImageIndex(int index, bool notify) {
     _imageIndex = index;
-    if(notify) {
+    if (notify) {
       update();
     }
   }
 
   Future<void> getProductDetails(Item item) async {
     _item = null;
-    if(item.name != null) {
+    if (item.name != null) {
       _item = item;
-    }else {
+    } else {
       _item = null;
       Response response = await itemRepo.getItemDetails(item.id);
       if (response.statusCode == 200) {
@@ -314,9 +330,9 @@ class ItemController extends GetxController implements GetxService {
     setExistInCart(item, notify: false);
   }
 
-  void setSelect(int select, bool notify){
+  void setSelect(int select, bool notify) {
     _productSelect = select;
-    if(notify){
+    if (notify) {
       update();
     }
   }
@@ -340,24 +356,40 @@ class ItemController extends GetxController implements GetxService {
   }
 
   bool isAvailable(Item item) {
-    return DateConverter.isAvailable(item.availableTimeStarts, item.availableTimeEnds);
+    return DateConverter.isAvailable(
+        item.availableTimeStarts, item.availableTimeEnds);
   }
 
-  double getDiscount(Item item) => item.storeDiscount == 0 ? item.discount : item.storeDiscount;
+  double getDiscount(Item item) =>
+      item.storeDiscount == 0 ? item.discount : item.storeDiscount;
 
-  String getDiscountType(Item item) => item.storeDiscount == 0 ? item.discountType : 'percent';
+  String getDiscountType(Item item) =>
+      item.storeDiscount == 0 ? item.discountType : 'percent';
 
-  void navigateToItemPage(Item item, BuildContext context, {bool inStore = false, bool isCampaign = false}) {
-    if(Get.find<SplashController>().configModel.moduleConfig.module.showRestaurantText) {
-      ResponsiveHelper.isMobile(context) ? Get.bottomSheet(
-        ItemBottomSheet(item: item, inStorePage: inStore, isCampaign: isCampaign),
-        backgroundColor: Colors.transparent, isScrollControlled: true,
-      ) : Get.dialog(
-        Dialog(child: ItemBottomSheet(item: item, inStorePage: inStore, isCampaign: isCampaign)),
-      );
-    }else {
-      Get.toNamed(RouteHelper.getItemDetailsRoute(item.id), arguments: ItemDetailsScreen(item: item));
+  void navigateToItemPage(Item item, BuildContext context,
+      {bool inStore = false, bool isCampaign = false}) {
+    if (Get.find<SplashController>()
+        .configModel
+        .moduleConfig
+        .module
+        .showRestaurantText) {
+      ResponsiveHelper.isMobile(context)
+          ? Get.bottomSheet(
+              ItemBottomSheet(
+                  item: item, inStorePage: inStore, isCampaign: isCampaign),
+              backgroundColor: Colors.transparent,
+              isScrollControlled: true,
+            )
+          : Get.dialog(
+              Dialog(
+                  child: ItemBottomSheet(
+                      item: item,
+                      inStorePage: inStore,
+                      isCampaign: isCampaign)),
+            );
+    } else {
+      Get.toNamed(RouteHelper.getItemDetailsRoute(item.id),
+          arguments: ItemDetailsScreen(item: item));
     }
   }
-
 }
